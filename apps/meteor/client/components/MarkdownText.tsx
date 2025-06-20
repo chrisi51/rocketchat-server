@@ -7,6 +7,7 @@ import type { ComponentProps } from 'react';
 import React, { useMemo } from 'react';
 
 import { renderMessageEmoji } from '../lib/utils/renderMessageEmoji';
+import { useAutoLinkSchemes } from '../views/room/MessageList/hooks/useAutoLinkSchemes';
 
 type MarkdownTextParams = {
 	content: string;
@@ -98,7 +99,8 @@ const MarkdownText = ({
 	const t = useTranslation();
 	let markedOptions: marked.MarkedOptions;
 
-	const schemes = 'http,https,notes,ftp,ftps,tel,mailto,sms,cid';
+       const customSchemes = useAutoLinkSchemes();
+       const schemes = ['http', 'https', 'notes', 'ftp', 'ftps', 'tel', 'mailto', 'sms', 'cid', ...customSchemes].join(',');
 
 	switch (variant) {
 		case 'inline':
@@ -112,7 +114,7 @@ const MarkdownText = ({
 			markedOptions = options;
 	}
 
-	const __html = useMemo(() => {
+       const __html = useMemo(() => {
 		const html = ((): any => {
 			if (content && typeof content === 'string') {
 				const markedHtml = /inline/.test(variant)
@@ -144,8 +146,8 @@ const MarkdownText = ({
 			}
 		});
 
-		return preserveHtml ? html : html && sanitizer(html, { ADD_ATTR: ['target'], ALLOWED_URI_REGEXP: getRegexp(schemes) });
-	}, [preserveHtml, sanitizer, content, variant, markedOptions, parseEmoji, t]);
+               return preserveHtml ? html : html && sanitizer(html, { ADD_ATTR: ['target'], ALLOWED_URI_REGEXP: getRegexp(schemes) });
+       }, [preserveHtml, sanitizer, content, variant, markedOptions, parseEmoji, t, customSchemes]);
 
 	return __html ? (
 		<Box

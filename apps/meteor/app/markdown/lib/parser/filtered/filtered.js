@@ -5,9 +5,9 @@
  */
 export const filtered = (
 	message,
-	options = {
-		supportSchemesForLink: 'http,https',
-	},
+       options = {
+               supportSchemesForLink: 'http,https',
+       },
 ) => {
 	const schemes = options.supportSchemesForLink.split(',').join('|');
 

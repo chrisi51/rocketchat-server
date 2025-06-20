@@ -7,10 +7,10 @@ import { markdown } from './markdown.js';
 
 export const original = (
 	message,
-	options = {
-		supportSchemesForLink: 'http,https',
-		headers: true,
-	},
+       options = {
+               supportSchemesForLink: 'http,https',
+               headers: true,
+       },
 ) => {
 	// Parse markdown code
 	message = code(message);
