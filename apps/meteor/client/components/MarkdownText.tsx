@@ -114,7 +114,7 @@ const MarkdownText = ({
 			markedOptions = options;
 	}
 
-       const __html = useMemo(() => {
+	const __html = useMemo(() => {
 		const html = ((): any => {
 			if (content && typeof content === 'string') {
 				const markedHtml = /inline/.test(variant)
@@ -146,7 +146,7 @@ const MarkdownText = ({
 			}
 		});
 
-               return preserveHtml ? html : html && sanitizer(html, { ADD_ATTR: ['target'], ALLOWED_URI_REGEXP: getRegexp(schemes) });
+		return preserveHtml ? html : html && sanitizer(html, { ADD_ATTR: ['target'], ALLOWED_URI_REGEXP: getRegexp(schemes) });
 	}, [preserveHtml, sanitizer, content, variant, markedOptions, parseEmoji, t, customSchemes]);
 
 	return __html ? (
