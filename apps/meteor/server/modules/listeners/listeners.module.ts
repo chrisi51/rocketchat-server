@@ -51,29 +51,29 @@ export class ListenersModule {
 
 		service.onEvent('notify.ephemeralMessage', (uid, rid, message) => {
 			if (!isMessageParserDisabled && message.msg) {
-                               const customDomains = settings.get<string>('Message_CustomDomain_AutoLink')
-                                       ? settings
-                                                       .get<string>('Message_CustomDomain_AutoLink')
-                                                       .split(',')
-                                                       .map((domain) => domain.trim())
-                                       : [];
-                               const customSchemes = settings.get<string>('Message_CustomScheme_AutoLink')
-                                       ? settings
-                                                       .get<string>('Message_CustomScheme_AutoLink')
-                                                       .split(',')
-                                                       .map((scheme) => scheme.trim())
-                                       : [];
+				const customDomains = settings.get<string>('Message_CustomDomain_AutoLink')
+					? settings
+							.get<string>('Message_CustomDomain_AutoLink')
+							.split(',')
+							.map((domain) => domain.trim())
+					: [];
+				const customSchemes = settings.get<string>('Message_CustomScheme_AutoLink')
+					? settings
+							.get<string>('Message_CustomScheme_AutoLink')
+							.split(',')
+							.map((scheme) => scheme.trim())
+					: [];
 
-                               message.md = parse(message.msg, {
-                                        colors: settings.get('HexColorPreview_Enabled'),
-                                        emoticons: true,
-                                        customDomains,
-                                        ...(customSchemes.length && { supportSchemesForLink: ['http', 'https', ...customSchemes].join(',') }),
-                                        ...(settings.get('Katex_Enabled') && {
-                                                katex: {
-                                                        dollarSyntax: settings.get('Katex_Dollar_Syntax'),
-                                                        parenthesisSyntax: settings.get('Katex_Parenthesis_Syntax'),
-                                                },
+				message.md = parse(message.msg, {
+					colors: settings.get('HexColorPreview_Enabled'),
+					emoticons: true,
+					customDomains,
+					...(customSchemes.length && { supportSchemesForLink: ['http', 'https', ...customSchemes].join(',') }),
+					...(settings.get('Katex_Enabled') && {
+						katex: {
+							dollarSyntax: settings.get('Katex_Dollar_Syntax'),
+							parenthesisSyntax: settings.get('Katex_Parenthesis_Syntax'),
+						},
 					}),
 				});
 			}
