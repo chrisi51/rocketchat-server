@@ -93,12 +93,12 @@ class VersionCompiler {
 					author: data.shift(),
 					subject: data.join('\n'),
 				};
-			} catch (e) {
-				if (process.env.NODE_ENV !== 'development') {
-					throw e;
-				}
-				// no git
-			}
+                       } catch (e) {
+                               if (!process.env.RC_VERSION_SKIP_GIT && process.env.NODE_ENV !== 'development') {
+                                       throw e;
+                               }
+                               // git information not available
+                       }
 
 			try {
 				const tags = await execAsync('git describe --abbrev=0 --tags');
@@ -114,13 +114,13 @@ class VersionCompiler {
 				if (output.commit) {
 					output.commit.branch = branch.stdout.replace('\n', '');
 				}
-			} catch (e) {
-				if (process.env.NODE_ENV !== 'development') {
-					throw e;
-				}
+                       } catch (e) {
+                               if (!process.env.RC_VERSION_SKIP_GIT && process.env.NODE_ENV !== 'development') {
+                                       throw e;
+                               }
 
-				// no branch
-			}
+                               // no branch information
+                       }
 
 			file.addJavaScript({
 				data: `exports.Info = ${JSON.stringify(output, null, 4)};
