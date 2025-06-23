@@ -57,11 +57,18 @@ export class ListenersModule {
 							.split(',')
 							.map((domain) => domain.trim())
 					: [];
+				const customSchemes = settings.get<string>('Message_CustomScheme_AutoLink')
+					? settings
+							.get<string>('Message_CustomScheme_AutoLink')
+							.split(',')
+							.map((scheme) => scheme.trim())
+					: [];
 
 				message.md = parse(message.msg, {
 					colors: settings.get('HexColorPreview_Enabled'),
 					emoticons: true,
 					customDomains,
+					...(customSchemes.length && { supportSchemesForLink: ['http', 'https', ...customSchemes].join(',') }),
 					...(settings.get('Katex_Enabled') && {
 						katex: {
 							dollarSyntax: settings.get('Katex_Dollar_Syntax'),

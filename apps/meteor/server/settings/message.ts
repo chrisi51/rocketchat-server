@@ -70,6 +70,10 @@ export const createMessageSettings = () =>
 			type: 'string',
 			public: true,
 		});
+		await this.add('Message_CustomScheme_AutoLink', '', {
+			type: 'string',
+			public: true,
+		});
 		await this.add('Message_AllowEditing', true, {
 			type: 'boolean',
 			public: true,
