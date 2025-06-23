@@ -6,6 +6,7 @@ type ParserConfig = {
 	colors?: boolean;
 	emoticons?: boolean;
 	customDomains?: string[];
+	supportSchemesForLink?: string;
 	katex?: {
 		dollarSyntax: boolean;
 		parenthesisSyntax: boolean;
