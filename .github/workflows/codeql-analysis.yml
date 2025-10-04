@@ -1,8 +1,8 @@
 name: 'Code scanning - action'
 
 on:
-  push:
-  pull_request:
+  push: # need credits
+  pull_request: # need credits
   #schedule:
   #  - cron: '0 13 * * *'
 
