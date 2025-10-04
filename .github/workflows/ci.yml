@@ -1,11 +1,11 @@
 name: CI
 
 on:
-  release:
+  release: # need credits
     types: [published]
-  pull_request:
+  pull_request: # need credits
     branches: '**'
-  push:
+  push: # need credits
     branches:
       - develop
 
