@@ -12,6 +12,6 @@ jobs:
   check:
     runs-on: ubuntu-22.04
     steps:
-      - uses: thehanimo/pr-title-checker@v1.4.2
+      - uses: thehanimo/pr-title-checker@v1.4.3
         with:
           GITHUB_TOKEN: ${{ secrets.RC_TITLE_CHECKER }}
