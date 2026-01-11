@@ -14,6 +14,7 @@ import { useMemo } from 'react';
 import type { MessageWithMdEnforced } from '../../../lib/parseMessageTextToAstMarkdown';
 import { parseMessageTextToAstMarkdown } from '../../../lib/parseMessageTextToAstMarkdown';
 import { useAutoLinkDomains } from '../../../views/room/MessageList/hooks/useAutoLinkDomains';
+import { useAutoLinkSchemes } from '../../../views/room/MessageList/hooks/useAutoLinkSchemes';
 import { useAutoTranslate } from '../../../views/room/MessageList/hooks/useAutoTranslate';
 import { useKatex } from '../../../views/room/MessageList/hooks/useKatex';
 import { useSubscriptionFromMessageQuery } from './useSubscriptionFromMessageQuery';
@@ -63,6 +64,7 @@ const normalizeAttachments = (attachments: MessageAttachment[], name?: string, t
 export const useNormalizedMessage = <TMessage extends IMessage>(message: TMessage): MessageWithMdEnforced => {
 	const { katexEnabled, katexDollarSyntaxEnabled, katexParenthesisSyntaxEnabled } = useKatex();
 	const customDomains = useAutoLinkDomains();
+	const customSchemes = useAutoLinkSchemes();
 	const subscription = useSubscriptionFromMessageQuery(message).data ?? undefined;
 	const autoTranslateOptions = useAutoTranslate(subscription);
 	const showColors = useSetting<boolean>('HexColorPreview_Enabled');
@@ -72,6 +74,9 @@ export const useNormalizedMessage = <TMessage extends IMessage>(message: TMessag
 			colors: showColors,
 			emoticons: true,
 			customDomains,
+			...(customSchemes.length && {
+				supportSchemesForLink: ['http', 'https', ...customSchemes].join(','),
+			}),
 			...(katexEnabled && {
 				katex: {
 					dollarSyntax: katexDollarSyntaxEnabled,
@@ -91,5 +96,5 @@ export const useNormalizedMessage = <TMessage extends IMessage>(message: TMessag
 		}
 
 		return normalizedMessage;
-	}, [showColors, customDomains, katexEnabled, katexDollarSyntaxEnabled, katexParenthesisSyntaxEnabled, message, autoTranslateOptions]);
+	}, [showColors, customDomains, customSchemes, katexEnabled, katexDollarSyntaxEnabled, katexParenthesisSyntaxEnabled, message, autoTranslateOptions]);
 };

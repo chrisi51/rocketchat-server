@@ -5,12 +5,14 @@ import { useMemo } from 'react';
 
 import { parseMessageTextToAstMarkdown } from '../../../../lib/parseMessageTextToAstMarkdown';
 import { useAutoLinkDomains } from './useAutoLinkDomains';
+import { useAutoLinkSchemes } from './useAutoLinkSchemes';
 import { useAutoTranslate } from './useAutoTranslate';
 
 export const useMessageBody = (message: IMessage | undefined, rid: string): string | Root => {
 	const subscription = useUserSubscription(rid);
 	const autoTranslateOptions = useAutoTranslate(subscription);
 	const customDomains = useAutoLinkDomains();
+	const customSchemes = useAutoLinkSchemes();
 
 	return useMemo(() => {
 		if (!message) {
@@ -21,6 +23,9 @@ export const useMessageBody = (message: IMessage | undefined, rid: string): stri
 			const parseOptions: Options = {
 				customDomains,
 				emoticons: true,
+				...(customSchemes.length && {
+					supportSchemesForLink: ['http', 'https', ...customSchemes].join(','),
+				}),
 			};
 
 			const messageWithMd = parseMessageTextToAstMarkdown(message, parseOptions, autoTranslateOptions);
@@ -45,5 +50,5 @@ export const useMessageBody = (message: IMessage | undefined, rid: string): stri
 		}
 
 		return '';
-	}, [message, customDomains, autoTranslateOptions]);
+	}, [message, customDomains, customSchemes, autoTranslateOptions]);
 };
